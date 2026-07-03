@@ -45,6 +45,8 @@
 * [ ] Quizizz
 * [ ] Google Classroom
 * [ ] Kahoot!
+* [ ] Chưa từng dùng nền tảng học tập như này
+* [ ] Khác(cho điền)
 
 ---
 
