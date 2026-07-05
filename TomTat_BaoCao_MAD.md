@@ -1,6 +1,6 @@
-# Tóm tắt Báo cáo: Quản lý ứng dụng học từ vựng
+# Tóm tắt Báo cáo: Quản lý ứng dụng học từ vựng và Kiến thức môn MAD
 
-Tóm tắt các thông tin quan trọng nhất từ file báo cáo phục vụ cho việc ôn tập và bảo vệ bài tập lớn.
+Tóm tắt các thông tin quan trọng nhất từ file báo cáo phục vụ cho việc ôn tập và bảo vệ bài tập lớn, kèm theo kiến thức trọng tâm của môn học.
 
 ## 1. Thông tin chung về đề tài
 *   **Tên đề tài:** Quản lý ứng dụng học từ vựng (trên nền tảng Android).
@@ -47,5 +47,38 @@ Hệ thống sử dụng **2 bảng** với **quan hệ 1-N (Một - Nhiều)**:
 *   **Hạn chế 3 (Thiếu tính năng ôn tập):** Chỉ mới là sổ tay ghi chép. 
     *   *Hướng khắc phục:* Thêm các Mini-game, Flashcard lật thẻ hoặc thuật toán Lặp lại ngắt quãng (Spaced Repetition) để tự động nhắc lại từ vựng cũ.
 
-> [!TIP]
-> **Câu hỏi thường gặp:** Giám khảo sẽ thường tập trung hỏi vào **cấu trúc CSDL (có mấy bảng, quan hệ thế nào)**, **cách bạn lấy dữ liệu lên danh sách (RecyclerView, Adapter)**, cũng như **hướng xử lý nếu mở rộng ứng dụng**. Hãy ôn kỹ các phần này!
+---
+
+## 6. Một số kiến thức cốt lõi môn MAD (Thường hỏi khi vấn đáp)
+
+> [!NOTE]
+> Đây là các khái niệm lý thuyết nền tảng về lập trình Android bằng Java mà giảng viên rất hay hỏi để kiểm tra kiến thức nền của sinh viên, ngoài việc chỉ hỏi về chức năng của ứng dụng.
+
+### 6.1. Vòng đời của Activity (Activity Lifecycle)
+Activity là một thành phần ứng dụng cung cấp màn hình để người dùng tương tác. Vòng đời của Activity có các hàm callback chính:
+*   `onCreate()`: Khởi tạo Activity, nạp giao diện (setContentView), thiết lập các biến... Gọi 1 lần duy nhất khi Activity được tạo.
+*   `onStart()`: Activity bắt đầu hiển thị cho người dùng (tuy nhiên chưa thể tương tác được).
+*   `onResume()`: Activity đang ở trạng thái Foreground, người dùng bắt đầu có thể tương tác (click, vuốt...).
+*   `onPause()`: Activity bị che khuất một phần (vd: có một dialog nhỏ hiện lên), tạm dừng các hoạt động tốn tài nguyên.
+*   `onStop()`: Activity bị che khuất hoàn toàn (vd: mở một Activity khác hoặc ấn Home).
+*   `onDestroy()`: Activity bị hủy (kết thúc hoàn toàn khỏi bộ nhớ RAM).
+
+### 6.2. Intent (Ý định)
+Intent là cơ chế truyền thông điệp giữa các thành phần của Android (như chuyển trang, truyền dữ liệu). Có 2 loại:
+*   **Explicit Intent (Intent tường minh):** Chỉ định rõ ràng lớp (class) nào sẽ nhận và xử lý. (Ví dụ: Dùng Intent để chuyển thẳng từ màn hình `TopicActivity` sang `VocabularyActivity`).
+*   **Implicit Intent (Intent không tường minh):** Không chỉ định rõ tên lớp nhận, mà chỉ khai báo "hành động" cần thực hiện. (Ví dụ: Yêu cầu mở trình duyệt web, mở ứng dụng gọi điện, chia sẻ chữ/ảnh).
+
+### 6.3. Phân biệt ListView và RecyclerView
+*   **ListView:** Chế độ cũ, dễ sử dụng cho danh sách ngắn. Nhược điểm là tạo ra View mới liên tục khi người dùng cuộn, gây tốn RAM và giật lag nếu danh sách quá lớn.
+*   **RecyclerView:** Thế hệ mới mạnh mẽ hơn, bắt buộc phải sử dụng **ViewHolder Pattern**. Khi người dùng cuộn màn hình, các View bị khuất sẽ không bị xóa mà được "tái sử dụng" (Recycle) để hiển thị dữ liệu mới đi lên. Điều này giúp cuộn mượt mà hàng ngàn item mà không bị tràn RAM.
+
+### 6.4. SQLite và các đối tượng liên quan
+*   **SQLiteOpenHelper:** Lớp abstract giúp tạo và nâng cấp database. Phải viết đè (override) 2 hàm: `onCreate()` (chạy khi DB chưa tồn tại để tạo bảng) và `onUpgrade()` (chạy khi version DB thay đổi).
+*   **SQLiteDatabase:** Đối tượng chính dùng để thực thi các câu lệnh SQL (`insert()`, `update()`, `delete()`, `rawQuery()`).
+*   **Cursor:** Đối tượng chứa tập kết quả trả về từ câu truy vấn (SELECT). Dùng vòng lặp `while (cursor.moveToNext())` để duyệt qua từng dòng dữ liệu.
+*   **ContentValues:** Đối tượng dạng Key-Value (Khóa-Giá trị) dùng để đóng gói dữ liệu an toàn trước khi gọi hàm `insert` hoặc `update` vào bảng (tránh lỗi SQL Injection so với việc tự nối chuỗi SQL).
+
+### 6.5. Các loại Layout cơ bản
+*   **LinearLayout:** Sắp xếp các view con tuần tự theo 1 chiều duy nhất: ngang (horizontal) hoặc dọc (vertical).
+*   **RelativeLayout:** Sắp xếp các view con dựa trên vị trí tương đối với nhau hoặc với layout cha (VD: nằm dưới button A, căn lề phải màn hình).
+*   **ConstraintLayout:** Layout hiện đại nhất, sử dụng các "ràng buộc" (constraints) kéo thả, giúp thiết kế giao diện phức tạp mà không cần lồng ghép nhiều layout, tối ưu hiệu năng hiển thị (render).
